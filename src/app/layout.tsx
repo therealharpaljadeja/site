@@ -19,7 +19,9 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={`${inter.className} box-border bg-graymodern-900`}>
+            <body
+                className={`${inter.className} m-auto max-w-[640px] p-4 box-border bg-graymodern-900`}
+            >
                 <Providers>
                     <Navbar />
                     {children}

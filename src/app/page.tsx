@@ -1,49 +1,67 @@
-import { Heading, Text } from "@chakra-ui/react";
+import { Heading, HStack, Text } from "@chakra-ui/react";
+import { SiGithub, SiX, SiYoutube } from "@icons-pack/react-simple-icons";
+import { Github, Linkedin } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
     return (
-        <main className="flex flex-col items-center p-4 mt-4 space-y-4">
-            <div className="max-w-[300px] w-[100%] h-[250px] rounded-md overflow-hidden relative border-white">
+        <main className="flex flex-col tablet:flex-row items-center mt-4 space-y-4 tablet:space-x-4 tablet:space-y-0 tablet:items-start max-w-[640px] m-auto">
+            <div className="w-full h-[250px] rounded-md overflow-hidden relative border-white">
                 <Image
-                    style={{ objectFit: "cover" }}
                     alt="harpal"
                     src="/images/IMG_2507.jpg"
                     fill={true}
+                    className="object-cover object-center"
                 />
             </div>
-            <div className="flex flex-col space-y-2 w-full justify-start">
-                <Heading>Harpalsinh Jadeja</Heading>
+            <div className="flex  flex-col space-y-2 w-full justify-start">
+                <Heading as="h1" className="">
+                    Harpalsinh Jadeja
+                </Heading>
                 <Text>
                     Hello! I'm Harpal, a Developer Relations Engineer at Celo
                     Foundation with 3 years of experience in the Web3 space,
                     including 2 years of professional work.
                 </Text>
-                <Text>
-                    My expertise lies in fostering community engagement and
-                    building robust developer tools in the decentralized
-                    ecosystem.
-                </Text>
-                <Text>
-                    Even outside of my professional role, I am deeply passionate
-                    about open-source development and regularly contribute to
-                    various projects like Metamask Snaps and Alchemy AA SDK.
-                </Text>
-                <Text>
-                    This commitment not only enhances my skills but also allows
-                    me to give back to the community and stay at the forefront
-                    of Web3 innovations.
-                </Text>
-                <Text>
+                <Text className="tablet:hidden">
                     In my free time, you can find me exploring the latest trends
-                    in blockchain technology or collaborating on new open-source
-                    initiatives. I'm always eager to connect with fellow
-                    enthusiasts and explore new opportunities.
+                    in Web3 or collaborating on new open-source initiatives. I'm
+                    always eager to connect with fellow enthusiasts and explore
+                    new opportunities.
                 </Text>
                 <Text>
                     Feel free to reach out to me using email or connect with me
                     on social media.
                 </Text>
+                <HStack className="w-full !mt-4 items-center">
+                    <Link
+                        target="_blank"
+                        href={"https://twitter.com/HarpalJadeja11"}
+                    >
+                        <SiX color="white" size={16} />
+                    </Link>
+                    <Link
+                        target="_blank"
+                        href={"https://www.linkedin.com/in/harpalsinhjadeja/"}
+                    >
+                        <Linkedin color="white" size={16} />
+                    </Link>
+                    <Link
+                        target="_blank"
+                        href={"https://github.com/therealharpaljadeja"}
+                    >
+                        <SiGithub color="white" size={16} />
+                    </Link>
+                    <Link
+                        target="_blank"
+                        href={
+                            "https://www.youtube.com/channel/UCRR7y_jGHOOe1wMyEhcQdUg"
+                        }
+                    >
+                        <SiYoutube color="white" size={16} />
+                    </Link>
+                </HStack>
             </div>
         </main>
     );
