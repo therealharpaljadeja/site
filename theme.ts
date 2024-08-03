@@ -28,6 +28,9 @@ export const theme = extendTheme({
             // letterSpacing: "-2%",
             color: "white",
         },
+        h3: {
+            fontSize: ["24px"],
+        },
         paragraph: {
             // fontSize: ["36px", "48px"],
             // fontWeight: "semibold",
