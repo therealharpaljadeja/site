@@ -2,7 +2,7 @@
 
 import { Link } from "@chakra-ui/next-js";
 import { Button, HStack, IconButton, Text } from "@chakra-ui/react";
-import { Bookmark, Code, House, Newspaper, Play } from "lucide-react";
+import { Bookmark, Code, FileText, House, Newspaper, Play } from "lucide-react";
 
 export default function Navbar() {
     return (
@@ -44,8 +44,19 @@ export default function Navbar() {
                         <Text className="hidden tablet:block">Videos</Text>
                     </Button>
                 </Link>
-
-                <Link href="/">
+                <a download href="/Harpalsinh_Jadeja_Resume_01_07_24.pdf">
+                    <Button
+                        className="flex items-center space-x-2"
+                        variant={"outline"}
+                    >
+                        <FileText
+                            className="size-[22px] tablet:size-[18px]"
+                            color="white"
+                        />
+                        <Text className="hidden tablet:block">Resume</Text>
+                    </Button>
+                </a>
+                <Link className="hidden mobileL:block" href="/">
                     <Button
                         className="flex items-center space-x-2"
                         variant={"outline"}
@@ -54,7 +65,6 @@ export default function Navbar() {
                             className="size-[22px] tablet:size-[18px]"
                             color="white"
                         />
-                        <Text className="hidden tablet:block">Bookmarks</Text>
                     </Button>
                 </Link>
             </HStack>
