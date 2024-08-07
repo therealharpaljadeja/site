@@ -13,6 +13,7 @@ export default function Home() {
                         alt="me"
                         src="/images/IMG_2507.jpg"
                         fill={true}
+                        sizes="(max-width: 768px) 50vw"
                         className="object-fit object-cover"
                     />
                 </div>
@@ -103,7 +104,7 @@ export default function Home() {
             <div className="flex flex-col w-full space-y-4">
                 <div className="flex items-end justify-between p-1 border-b-2 border-white">
                     <Heading size="lg">Videos</Heading>
-                    <Link href="/articles">
+                    <Link href="/videos">
                         <Text className="text-sm">View More</Text>
                     </Link>
                 </div>
