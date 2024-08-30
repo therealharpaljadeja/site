@@ -14,7 +14,7 @@ export default function Home() {
                     />
                 </div>
                 <div className="flex flex-col space-y-2 w-full justify-start">
-                    <h1 className="font-display text-graymodern-200 text-xs tablet:text-sm">
+                    <h1 className="font-display text-graymodern-200 text-xs tablet:text-md">
                         Hi, I'm Harpal 👋
                     </h1>
                     <p className="font-body text-graymodern-300">
@@ -73,7 +73,9 @@ export default function Home() {
             </div>
             <div className="flex flex-col w-full space-y-4">
                 <div className="flex items-end justify-between p-1 border-b-2 border-graymodern-600">
-                    <h1 className="text-xs text-graymodern-300">Articles</h1>
+                    <h1 className="text-text-xl text-graymodern-300 mobileL:text-sm">
+                        Articles
+                    </h1>
                     <Link href="/articles">
                         <p className="text-text-sm text-graymodern-300">
                             View More
@@ -85,32 +87,34 @@ export default function Home() {
                         href="https://www.alchemy.com/overviews/meta-transactions"
                         target="_blank"
                     >
-                        <div className="flex space-x-1 items-center">
-                            <p className="text-sm">
+                        <div className="flex space-x-2 justify-between items-center tablet:justify-normal">
+                            <p className="text-text-sm text-graymodern-300 mobileL:text-text-md hover:underline">
                                 What are Meta Transactions (ERC-2771)?
                             </p>
-                            <ArrowUpRight color="#dedede" size="14px" />
                         </div>
                     </Link>
                     <Link
                         href="https://www.alchemy.com/overviews/4337-vs-2771"
                         target="_blank"
                     >
-                        <div className="flex space-x-1 items-center">
-                            <p className="text-sm">
+                        <div className="flex space-x-2 justify-between items-center tablet:justify-normal">
+                            <p className="text-text-sm text-graymodern-300 mobileL:text-text-md">
                                 Account Abstraction (ERC-4337) vs. Meta
                                 Transactions (ERC-2771)
                             </p>
-                            <ArrowUpRight color="#dedede" size="14px" />
                         </div>
                     </Link>
                 </div>
             </div>
             <div className="flex flex-col w-full space-y-4">
-                <div className="flex items-end justify-between p-1 border-b-2 border-white">
-                    <h1>Videos</h1>
+                <div className="flex items-end justify-between p-1 border-b-2 border-graymodern-600">
+                    <h1 className="text-text-xl text-graymodern-300 mobileL:text-sm">
+                        Videos
+                    </h1>
                     <Link href="/videos">
-                        <p className="text-sm">View More</p>
+                        <p className="text-text-sm text-graymodern-300">
+                            View More
+                        </p>
                     </Link>
                 </div>
                 <div className="flex flex-col space-y-4 tablet:flex-row tablet:space-y-0 tablet:space-x-4">

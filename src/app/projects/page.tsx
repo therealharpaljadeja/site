@@ -13,10 +13,12 @@ export default function Projects() {
             <div className="grid grid-cols-1 tablet:grid-cols-2 gap-4">
                 {projects.map((project) => {
                     return (
-                        <div className="flex flex-col space-y-2 border-2 border-white">
-                            <div className="relative">
-                                <img src={project.thumbnail} />
-                            </div>
+                        <div className="flex flex-col space-y-2 border-2 p-2 rounded-md border-graymodern-700">
+                            {project.thumbnail ? (
+                                <div className="relative overflow-hidden rounded-md">
+                                    <img src={project.thumbnail} />
+                                </div>
+                            ) : null}
                             <div className="flex flex-col space-y-4 p-2">
                                 <div className="flex flex-col space-y-2">
                                     <Link
@@ -24,10 +26,13 @@ export default function Projects() {
                                         className="flex space-x-2 items-center"
                                         target="_blank"
                                     >
-                                        <h3>{project.title}</h3>
-                                        <ExternalLink color="white" size="10" />
+                                        <h3 className="font-display text-text-md text-graymodern-300">
+                                            {project.title}
+                                        </h3>
                                     </Link>
-                                    <p>{project.shortDescription}</p>
+                                    <p className="font-body text-text-sm text-graymodern-300">
+                                        {project.shortDescription}
+                                    </p>
                                 </div>
                                 <div className="flex space-x-2">
                                     {project.githubURL && (

@@ -23,16 +23,10 @@ export default function Articles() {
                                     }
                                     target="_blank"
                                 >
-                                    <div className="flex space-x-1 items-center">
-                                        <p className="text-text-sm tablet:text-text-md text-white font-body">
+                                    <div className="flex space-x-2 justify-between items-center tablet:justify-normal">
+                                        <p className="text-text-sm tablet:text-text-md text-white font-body hover:underline">
                                             {article.title}
                                         </p>
-                                        {article.externalLink ? (
-                                            <ArrowUpRight
-                                                color="#dedede"
-                                                size="14px"
-                                            />
-                                        ) : null}
                                     </div>
                                 </Link>
                             );

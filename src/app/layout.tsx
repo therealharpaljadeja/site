@@ -25,9 +25,9 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" className={`${geist.variable} ${inter.variable}`}>
-            <body className={`box-border bg-graymodern-800`}>
+            <body className={`box-border relative bg-graymodern-800`}>
                 <Navbar />
-                <main className="my-8 mx-auto px-4 tablet:px-0 flex flex-col space-y-6 max-w-[640px]">
+                <main className="pt-24 pb-12 mx-auto px-4 tablet:px-0 flex flex-col space-y-6 max-w-[640px]">
                     {children}
                 </main>
             </body>

@@ -36,7 +36,8 @@ export default function NavLink(
                     // isActive={isActive}
                     className={clsx(
                         `flex items-center space-x-2 px-4 py-2 rounded-md hover:bg-graymodern-600 active:bg-graymodern-900 active:text-graymodern-800`,
-                        isCurrent && "bg-graymodern-900"
+                        isCurrent &&
+                            "bg-graymodern-900 border border-graymodern-300"
                     )}
                     // _hover={{
                     //     bg: "bg-graymodern-300", // placeholder to override
