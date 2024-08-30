@@ -13,7 +13,10 @@ export default function Projects() {
             <div className="grid grid-cols-1 tablet:grid-cols-2 gap-4">
                 {projects.map((project) => {
                     return (
-                        <div className="flex flex-col space-y-2 border-2 p-2 rounded-md border-graymodern-700">
+                        <div
+                            className="flex flex-col space-y-2 border-2 p-2 rounded-md border-graymodern-700"
+                            key={project.title}
+                        >
                             {project.thumbnail ? (
                                 <div className="relative overflow-hidden rounded-md">
                                     <img src={project.thumbnail} />

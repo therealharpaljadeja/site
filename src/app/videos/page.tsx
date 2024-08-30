@@ -11,7 +11,11 @@ export default function Videos() {
             <div className="grid grid-cols-1 tablet:grid-cols-2 gap-4">
                 {videos.map((video) => {
                     return (
-                        <Link href={video.externalLink} target="_blank">
+                        <Link
+                            href={video.externalLink}
+                            target="_blank"
+                            key={video.title}
+                        >
                             <img alt={video.title} src={video.thumbnail} />
                         </Link>
                     );

@@ -27,7 +27,7 @@ export default function NavLink(
         return () => {
             setIsCurrent(false);
         };
-    }, [pathname]);
+    }, [pathname, href]);
 
     if (href)
         return (

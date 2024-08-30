@@ -15,17 +15,17 @@ export default function Home() {
                 </div>
                 <div className="flex flex-col space-y-2 w-full justify-start">
                     <h1 className="font-display text-graymodern-200 text-xs tablet:text-md">
-                        Hi, I'm Harpal 👋
+                        Hi, I&apos;m Harpal 👋
                     </h1>
                     <p className="font-body text-graymodern-300">
-                        I'm a Developer Relations Engineer at Celo Foundation
-                        with 3 years of experience in the Web3 space, including
-                        2 years of professional work.
+                        I&apos;m a Developer Relations Engineer at Celo
+                        Foundation with 3 years of experience in the Web3 space,
+                        including 2 years of professional work.
                     </p>
                     <p className="text-graymodern-300">
                         In my free time, I explore Web3 trends and collaborate
-                        on open-source projects. I'm always eager to connect
-                        with fellow enthusiasts.
+                        on open-source projects. I&apos;m always eager to
+                        connect with fellow enthusiasts.
                     </p>
                     <p className="font-body text-graymodern-300">
                         On this site, you can explore my technical articles,
