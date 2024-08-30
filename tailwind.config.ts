@@ -8,7 +8,6 @@ const config = {
         "./app/**/*.{ts,tsx}",
         "./src/**/*.{ts,tsx}",
     ],
-    prefix: "",
     theme: {
         screens: {
             mobileS: "320px",
@@ -17,6 +16,19 @@ const config = {
             tablet: "768px",
             laptop: "1024px",
             laptopL: "1440px",
+        },
+        fontSize: {
+            "2xl": "72px",
+            xl: "60px",
+            lg: "48px",
+            md: "36px",
+            sm: "30px",
+            xs: "24px",
+            "text-xl": "20px",
+            "text-lg": "18px",
+            "text-md": "16px",
+            "text-sm": "14px",
+            "text-xs": "12px",
         },
         fontFamily: {
             display: ["var(--font-geist)"],

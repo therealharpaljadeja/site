@@ -1,47 +1,42 @@
-import { Heading, HStack, Image, Text } from "@chakra-ui/react";
-import NextImage from "next/image";
 import { SiGithub, SiX, SiYoutube } from "@icons-pack/react-simple-icons";
-import { ArrowUpRight, Github, Linkedin } from "lucide-react";
+import { ArrowUpRight, Linkedin, Mail } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
     return (
-        <main className="flex flex-col items-center mt-4 space-y-12 tablet:space-y-8  max-w-[640px] m-auto">
+        <div className="space-y-12 tablet:space-y-8">
             <div className="flex flex-col space-y-4 tablet:flex-row tablet:space-x-4 tablet:items-start tablet:space-y-0">
-                <div className="w-full h-[250px] rounded-md overflow-hidden relative border-white">
-                    <NextImage
+                <div className="w-full h-[250px] mobileM:h-[360px] rounded-md overflow-hidden relative border-white shadow-sm">
+                    <img
                         alt="me"
                         src="/images/IMG_2507.jpg"
-                        fill={true}
-                        sizes="(max-width: 768px) 50vw"
-                        className="object-fit object-cover"
+                        className="translate-y-[-60px] w-[290px] h-[340px] mobileM:translate-y-[-20px] mobileM:w-[360px] mobileM:h-[420px] mobileL:translate-y-[-60px] mobileL:w-[400px] mobileL:h-[480px] tablet:translate-y-[-20px] tablet:h-[380px]"
                     />
                 </div>
-                <div className="flex  flex-col space-y-2 w-full justify-start">
-                    <Heading as="h1" className="">
-                        Harpalsinh Jadeja
-                    </Heading>
-                    <Text>
-                        Hello! I'm Harpal, a Developer Relations Engineer at
-                        Celo Foundation with 3 years of experience in the Web3
-                        space, including 2 years of professional work.
-                    </Text>
-                    <Text className="tablet:hidden">
-                        In my free time, you can find me exploring the latest
-                        trends in Web3 or collaborating on new open-source
-                        initiatives. I'm always eager to connect with fellow
-                        enthusiasts and explore new opportunities.
-                    </Text>
-                    <Text>
-                        Feel free to reach out to me using email or connect with
-                        me on social media.
-                    </Text>
-                    <HStack className="w-full !mt-4 items-center">
+                <div className="flex flex-col space-y-2 w-full justify-start">
+                    <h1 className="font-display text-graymodern-200 text-xs tablet:text-sm">
+                        Hi, I'm Harpal 👋
+                    </h1>
+                    <p className="font-body text-graymodern-300">
+                        I'm a Developer Relations Engineer at Celo Foundation
+                        with 3 years of experience in the Web3 space, including
+                        2 years of professional work.
+                    </p>
+                    <p className="text-graymodern-300">
+                        In my free time, I explore Web3 trends and collaborate
+                        on open-source projects. I'm always eager to connect
+                        with fellow enthusiasts.
+                    </p>
+                    <p className="font-body text-graymodern-300">
+                        On this site, you can explore my technical articles,
+                        watch my videos, or learn more about me.
+                    </p>
+                    <div className="w-full !mt-4 flex space-x-4 items-center">
                         <Link
                             target="_blank"
                             href={"https://twitter.com/HarpalJadeja11"}
                         >
-                            <SiX color="white" size={16} />
+                            <SiX className="fill-[#dfdfdf]" size={24} />
                         </Link>
                         <Link
                             target="_blank"
@@ -49,13 +44,13 @@ export default function Home() {
                                 "https://www.linkedin.com/in/harpalsinhjadeja/"
                             }
                         >
-                            <Linkedin color="white" size={16} />
+                            <Linkedin className="stroke-[#dfdfdf]" size={24} />
                         </Link>
                         <Link
                             target="_blank"
                             href={"https://github.com/therealharpaljadeja"}
                         >
-                            <SiGithub color="white" size={16} />
+                            <SiGithub className="fill-[#dfdfdf]" size={24} />
                         </Link>
                         <Link
                             target="_blank"
@@ -63,16 +58,26 @@ export default function Home() {
                                 "https://www.youtube.com/channel/UCRR7y_jGHOOe1wMyEhcQdUg"
                             }
                         >
-                            <SiYoutube color="white" size={16} />
+                            <SiYoutube className="fill-[#dfdfdf]" size={24} />
                         </Link>
-                    </HStack>
+                        <Link
+                            target="_blank"
+                            href={
+                                "mailto:harpaljadeja.informal@gmail.com?subject=Mail from Our Site"
+                            }
+                        >
+                            <Mail className="stroke-[#dfdfdf]" size={24} />
+                        </Link>
+                    </div>
                 </div>
             </div>
             <div className="flex flex-col w-full space-y-4">
-                <div className="flex items-end justify-between p-1 border-b-2 border-white">
-                    <Heading size="lg">Articles</Heading>
+                <div className="flex items-end justify-between p-1 border-b-2 border-graymodern-600">
+                    <h1 className="text-xs text-graymodern-300">Articles</h1>
                     <Link href="/articles">
-                        <Text className="text-sm">View More</Text>
+                        <p className="text-text-sm text-graymodern-300">
+                            View More
+                        </p>
                     </Link>
                 </div>
                 <div className="flex flex-col space-y-4">
@@ -81,9 +86,9 @@ export default function Home() {
                         target="_blank"
                     >
                         <div className="flex space-x-1 items-center">
-                            <Text className="text-sm">
+                            <p className="text-sm">
                                 What are Meta Transactions (ERC-2771)?
-                            </Text>
+                            </p>
                             <ArrowUpRight color="#dedede" size="14px" />
                         </div>
                     </Link>
@@ -92,10 +97,10 @@ export default function Home() {
                         target="_blank"
                     >
                         <div className="flex space-x-1 items-center">
-                            <Text className="text-sm">
+                            <p className="text-sm">
                                 Account Abstraction (ERC-4337) vs. Meta
                                 Transactions (ERC-2771)
-                            </Text>
+                            </p>
                             <ArrowUpRight color="#dedede" size="14px" />
                         </div>
                     </Link>
@@ -103,32 +108,36 @@ export default function Home() {
             </div>
             <div className="flex flex-col w-full space-y-4">
                 <div className="flex items-end justify-between p-1 border-b-2 border-white">
-                    <Heading size="lg">Videos</Heading>
+                    <h1>Videos</h1>
                     <Link href="/videos">
-                        <Text className="text-sm">View More</Text>
+                        <p className="text-sm">View More</p>
                     </Link>
                 </div>
                 <div className="flex flex-col space-y-4 tablet:flex-row tablet:space-y-0 tablet:space-x-4">
-                    <Link
-                        href="https://www.youtube.com/watch?v=gMG9hYevFtA"
-                        target="_blank"
-                    >
-                        <Image
-                            alt="Farcaster Frames"
-                            src="/images/Farcaster Frames.png"
-                        />
-                    </Link>
-                    <Link
-                        href="https://www.alchemy.com/overviews/4337-vs-2771"
-                        target="_blank"
-                    >
-                        <Image
-                            alt="Coinbase Smart Wallet Tutorial"
-                            src="/images/Coinbase Smart Wallet Tutorial.png"
-                        />
-                    </Link>
+                    <div className="relative">
+                        <Link
+                            href="https://www.youtube.com/watch?v=gMG9hYevFtA"
+                            target="_blank"
+                        >
+                            <img
+                                alt="Farcaster Frames"
+                                src="https://img.youtube.com/vi/gMG9hYevFtA/maxresdefault.jpg"
+                            />
+                        </Link>
+                    </div>
+                    <div className="relative">
+                        <Link
+                            href="https://www.alchemy.com/overviews/4337-vs-2771"
+                            target="_blank"
+                        >
+                            <img
+                                alt="Coinbase Smart Wallet Tutorial"
+                                src="https://img.youtube.com/vi/ReDpcUJMz5g/maxresdefault.jpg"
+                            />
+                        </Link>
+                    </div>
                 </div>
             </div>
-        </main>
+        </div>
     );
 }

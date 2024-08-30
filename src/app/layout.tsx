@@ -2,9 +2,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Inter } from "next/font/google";
-import "./globals.css";
-
 import Navbar from "@/components/navbar/Navbar";
+
 const geist = localFont({
     src: "../../public/fonts/GeistVF.ttf",
     variable: "--font-geist",
@@ -26,9 +25,11 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" className={`${geist.variable} ${inter.variable}`}>
-                    <Navbar />
+            <body className={`box-border bg-graymodern-800`}>
+                <Navbar />
+                <main className="my-8 mx-auto px-4 tablet:px-0 flex flex-col space-y-6 max-w-[640px]">
                     {children}
-                </Providers>
+                </main>
             </body>
         </html>
     );
