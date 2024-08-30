@@ -18,6 +18,10 @@ const config = {
             laptop: "1024px",
             laptopL: "1440px",
         },
+        fontFamily: {
+            display: ["var(--font-geist)"],
+            body: ["var(--font-inter)"],
+        },
         extend: {
             colors: {
                 graymodern: {

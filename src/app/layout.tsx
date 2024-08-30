@@ -1,11 +1,18 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
+import "./globals.css";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
 import Navbar from "@/components/navbar/Navbar";
-import { Providers } from "./providers";
-
-const inter = Inter({ subsets: ["latin"] });
+const geist = localFont({
+    src: "../../public/fonts/GeistVF.ttf",
+    variable: "--font-geist",
+});
+const inter = Inter({
+    variable: "--font-inter",
+    subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -18,11 +25,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
-            <body
-                className={`${inter.className} m-auto max-w-[640px] p-4 box-border bg-graymodern-900`}
-            >
-                <Providers>
+        <html lang="en" className={`${geist.variable} ${inter.variable}`}>
                     <Navbar />
                     {children}
                 </Providers>
