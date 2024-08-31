@@ -67,7 +67,8 @@ export const Projects: Project[] = [
     {
         title: "Farcaster Github Action",
         shortDescription: "Automate casting to Farcaster using Github Actions",
-        thumbnail: "",
+        thumbnail:
+            "https://opengraph.githubassets.com/2fad8a6cf1bf2209e85f6eb93eb17ceedf5710a8e3ec812c794cdef846978536/therealharpaljadeja/farcaster-cast-github-action",
         externalURL: "https://github.com/marketplace/actions/cast-to-farcaster",
         githubURL:
             "https://github.com/therealharpaljadeja/farcaster-cast-github-action",
@@ -173,6 +174,8 @@ export const Projects: Project[] = [
 
     {
         title: "Celo OZ Relayer",
+        thumbnail:
+            "https://opengraph.githubassets.com/074060d71295d95624cbf79b5f0c00fa6c8938b789b853120c698dfa1f78b41d/therealharpaljadeja/celo-meta-tx-using-openzeppelin-relayer",
         shortDescription:
             "Meta-Transactions on Celo network using Openzeppelin Relay",
         externalURL:
