@@ -1,6 +1,6 @@
 "use client";
 
-import { FileText, House, Newspaper, Play, Zap } from "lucide-react";
+import { BookOpen, FileText, House, Newspaper, Play, Zap } from "lucide-react";
 import NavLink from "./NavLink";
 
 export default function Navbar() {
@@ -20,7 +20,7 @@ export default function Navbar() {
                 {/* Resume Download */}
                 <a download href="/Harpalsinh_Jadeja_Resume_01_07_24.pdf">
                     <button
-                        className={`flex items-center space-x-2 px-4 py-2 rounded-md hover:bg-graymodern-600 active:bg-graymodern-900 active:text-graymodern-800`}
+                        className={`flex items-center space-x-2 px-2 py-1 mobileL:px-4 mobileL:py-2 rounded-md hover:bg-graymodern-600 active:bg-graymodern-900 active:text-graymodern-800`}
                     >
                         <FileText className={navLinkIconClasses} />
                         <p className="hidden font-display tablet:block text-graymodern-300">
@@ -39,22 +39,27 @@ const navLinkIconClasses =
 const navLinks = [
     {
         link: "/",
-        text: "Home",
+        text: "",
         icon: <House className={navLinkIconClasses} />,
     },
     {
         link: "/articles",
-        text: "Articles",
+        text: "",
         icon: <Newspaper className={navLinkIconClasses} />,
     },
     {
         link: "/videos",
-        text: "Videos",
+        text: "",
         icon: <Play className={navLinkIconClasses} />,
     },
     {
         link: "/projects",
-        text: "Projects",
+        text: "",
         icon: <Zap className={navLinkIconClasses} />,
+    },
+    {
+        link: "/me",
+        text: "",
+        icon: <BookOpen className={navLinkIconClasses} />,
     },
 ];

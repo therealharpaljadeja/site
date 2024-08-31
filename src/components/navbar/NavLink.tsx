@@ -34,15 +34,15 @@ export default function NavLink(
             <Link href={href}>
                 <button
                     className={clsx(
-                        `flex items-center space-x-2 px-4 py-2 rounded-md hover:bg-graymodern-600 active:bg-graymodern-900 active:text-graymodern-800`,
+                        `flex items-center space-x-2 px-2 py-1 mobileL:px-4 mobileL:py-2 rounded-md hover:bg-graymodern-600 active:bg-graymodern-900 active:text-graymodern-800`,
                         isCurrent &&
                             "bg-graymodern-900 border border-graymodern-300"
                     )}
                 >
                     {children}
-                    <p className="hidden font-display text-graymodern-300 tablet:block">
+                    {/* <p className="hidden font-display text-graymodern-300 tablet:block">
                         {text}
-                    </p>
+                    </p> */}
                 </button>
             </Link>
         );
