@@ -8,7 +8,7 @@ export default function Me() {
             <h1 className="font-display text-white text-xs tablet:text-sm">
                 About Me
             </h1>
-            <div className="flex flex-col space-y-4">
+            <div className="flex flex-col space-y-8">
                 {/* {me.map((question) => (
                     <div className="flex flex-col space-y-2">
                         <h2 className="font-display text-graymodern-300 text-text-lg border-1 border-b border-graymodern-500 pb-1">
@@ -176,14 +176,16 @@ export default function Me() {
                         some sequels (Until Naruto became Hokage, it was fun)
                     </Text>
                 </div>
-                <h3 className="font-display italic text-text-md text-graymodern-300">
-                    If you really read everything, thank you for your time!
-                </h3>
-                <h3 className="font-display italic text-text-md text-graymodern-300">
-                    Reading is a good way to increase focus irrespective of what
-                    you read if you can stick to something for over an hour
-                    without distracted you are doing good!
-                </h3>
+                <div className="space-y-4">
+                    <h3 className="font-display italic text-text-md text-graymodern-300">
+                        If you really read everything, thank you for your time!
+                    </h3>
+                    <h3 className="font-display italic text-text-md text-graymodern-300">
+                        Reading is a good way to increase focus irrespective of
+                        what you read if you can stick to something for over an
+                        hour without distracted you are doing good!
+                    </h3>
+                </div>
             </div>
         </React.Fragment>
     );
