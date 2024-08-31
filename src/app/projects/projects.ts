@@ -24,7 +24,7 @@ enum TECH_STACK {
     CELO,
 }
 
-type Project = {
+export type Project = {
     title: string;
     shortDescription: string;
     thumbnail?: string;
@@ -99,7 +99,7 @@ export const Projects: Project[] = [
     },
     {
         title: "Event Farcaster Frame",
-        shortDescription: "1st ever RSVP Frame",
+        shortDescription: "1st event RSVP Frame",
         externalURL: "https://warpcast.com/harpaljadeja/0x91fa6b14",
         thumbnail:
             "https://github.com/therealharpaljadeja/farcaster-event-frame/blob/main/public/start.png?raw=true",
@@ -114,7 +114,7 @@ export const Projects: Project[] = [
     {
         title: "Akinator Farcaster Frame (700+ players)",
         shortDescription:
-            "The famous Akinator Game in a frame, broke my Vercel",
+            "The famous Akinator Game in a frame, broke my Vercel Free plan",
         externalURL: "https://warpcast.com/harpaljadeja/0xa4ff1e6b",
         thumbnail:
             "https://github.com/therealharpaljadeja/akinator-farcaster-frame/blob/main/public/assets/images/first.png?raw=true",

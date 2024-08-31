@@ -8,6 +8,7 @@ const geist = localFont({
     src: "../../public/fonts/GeistVF.ttf",
     variable: "--font-geist",
 });
+
 const inter = Inter({
     variable: "--font-inter",
     subsets: ["latin"],

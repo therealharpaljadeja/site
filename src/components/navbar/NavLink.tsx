@@ -12,9 +12,9 @@ import {
 
 export default function NavLink(
     props: ButtonHTMLAttributes<HTMLButtonElement> &
-        LinkHTMLAttributes<HTMLAnchorElement>
+        LinkHTMLAttributes<HTMLAnchorElement> & { text: string }
 ) {
-    const { children, href } = props;
+    const { children, href, text } = props;
     const [isCurrent, setIsCurrent] = useState(false);
     const pathname = usePathname();
 
@@ -33,18 +33,16 @@ export default function NavLink(
         return (
             <Link href={href}>
                 <button
-                    // isActive={isActive}
                     className={clsx(
                         `flex items-center space-x-2 px-4 py-2 rounded-md hover:bg-graymodern-600 active:bg-graymodern-900 active:text-graymodern-800`,
                         isCurrent &&
                             "bg-graymodern-900 border border-graymodern-300"
                     )}
-                    // _hover={{
-                    //     bg: "bg-graymodern-300", // placeholder to override
-                    // }}
-                    // variant={"outline"}
                 >
                     {children}
+                    <p className="hidden font-display text-graymodern-300 tablet:block">
+                        {text}
+                    </p>
                 </button>
             </Link>
         );
