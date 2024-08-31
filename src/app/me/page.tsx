@@ -46,6 +46,11 @@ export default function Me() {
                         What is this website?
                     </h2>
                     <Text>
+                        Welcome to my corner of the internet, I have always
+                        struggled with showcasing/selling myself which is why
+                        this website.
+                    </Text>
+                    <Text>
                         Irrespective of how many people visit this website, this
                         will be the place where I keep all my code snippets that
                         I keep needing in my{" "}
