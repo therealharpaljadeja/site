@@ -6,7 +6,7 @@ export default function Socials() {
     return (
         <div className="w-full !mt-4 flex space-x-4 items-center">
             {socials.map((social) => (
-                <Link target="_blank" href={social.link}>
+                <Link target="_blank" href={social.link} key={social.link}>
                     {social.icon}
                 </Link>
             ))}

@@ -33,6 +33,7 @@ function ArticlesSection() {
                                     : article.externalLink
                             }
                             target="_blank"
+                            key={article.title}
                         >
                             <div className="flex space-x-2 justify-between items-center tablet:justify-normal">
                                 <p className="text-text-sm text-graymodern-300 mobileL:text-text-md hover:underline">
@@ -52,7 +53,11 @@ function VideosSection() {
             <HeaderWithViewMore header="Videos" viewMoreLink="/videos" />
             <div className="grid grid-cols-1 tablet:grid-cols-2 gap-4">
                 {Videos.slice(0, 4).map((video) => (
-                    <Link href={video.externalLink} target="_blank">
+                    <Link
+                        href={video.externalLink}
+                        target="_blank"
+                        key={video.title}
+                    >
                         <img alt={video.title} src={video.thumbnail} />
                     </Link>
                 ))}
