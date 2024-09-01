@@ -1,4 +1,3 @@
-import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { Articles as articles } from "./articles";
 import React from "react";

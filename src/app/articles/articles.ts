@@ -57,4 +57,9 @@ export const Articles: Article[] = [
         externalLink:
             "https://metaschool.so/courses/create-a-horoscope-web3-nft-application",
     },
+    {
+        title: "Example",
+        date: new Date("2024-09-01"),
+        slug: "/articles/example",
+    },
 ];

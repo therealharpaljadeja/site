@@ -12,15 +12,14 @@ import {
 
 export default function NavLink(
     props: ButtonHTMLAttributes<HTMLButtonElement> &
-        LinkHTMLAttributes<HTMLAnchorElement> & { text: string }
+        LinkHTMLAttributes<HTMLAnchorElement>
 ) {
-    const { children, href, text } = props;
+    const { children, href } = props;
     const [isCurrent, setIsCurrent] = useState(false);
     const pathname = usePathname();
 
     useEffect(() => {
         if (pathname == href) {
-            console.log(`${href} is active`);
             setIsCurrent(true);
         }
 
