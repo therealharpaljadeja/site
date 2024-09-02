@@ -8,11 +8,7 @@ export default function Navbar() {
         <div className="flex items-center fixed w-full border-b-2 border-graymodern-700 bg-graymodern-800 z-10">
             <div className="max-w-[640px] flex justify-center m-auto w-full p-4 space-x-2">
                 {navLinks.map((navLink) => (
-                    <NavLink
-                        href={navLink.link}
-                        text={navLink.text}
-                        key={navLink.text}
-                    >
+                    <NavLink href={navLink.link} key={navLink.link}>
                         {navLink.icon}
                     </NavLink>
                 ))}
@@ -39,27 +35,22 @@ const navLinkIconClasses =
 const navLinks = [
     {
         link: "/",
-        text: "",
         icon: <House className={navLinkIconClasses} />,
     },
     {
         link: "/articles",
-        text: "",
         icon: <Newspaper className={navLinkIconClasses} />,
     },
     {
         link: "/videos",
-        text: "",
         icon: <Play className={navLinkIconClasses} />,
     },
     {
         link: "/projects",
-        text: "",
         icon: <Zap className={navLinkIconClasses} />,
     },
     {
         link: "/me",
-        text: "",
         icon: <BookOpen className={navLinkIconClasses} />,
     },
 ];

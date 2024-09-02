@@ -57,4 +57,10 @@ export const Articles: Article[] = [
         externalLink:
             "https://metaschool.so/courses/create-a-horoscope-web3-nft-application",
     },
+
+    {
+        title: "How to integrate Coinbase Smart Wallet into your frontend",
+        date: new Date("2024-06-28"),
+        slug: "/articles/cbsw-connect-wallet-tutorial",
+    },
 ];
