@@ -62,4 +62,9 @@ export const Articles: Article[] = [
         date: new Date("2024-09-01"),
         slug: "/articles/example",
     },
+    {
+        title: "How to integrate Coinbase Smart Wallet into your frontend",
+        date: new Date("2024-06-28"),
+        slug: "/articles/cbsw-connect-wallet-tutorial",
+    },
 ];
