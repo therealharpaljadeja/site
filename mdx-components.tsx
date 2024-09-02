@@ -84,9 +84,19 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
             <Text {...rest}>{children}</Text>
         ),
         ol: OrderedList,
-        a: (props: JSX.IntrinsicElements["a"]) => (
-            <a className="text-graymodern-300 underline underline-offset-4 italic">
-                {props.children}
+        a: ({
+            children,
+            href,
+            target,
+            ...rest
+        }: JSX.IntrinsicElements["a"]) => (
+            <a
+                {...rest}
+                href={href}
+                target={href?.startsWith("/") ? "_self" : "_blank"}
+                className="text-graymodern-300 underline underline-offset-4 italic"
+            >
+                {children}
             </a>
         ),
         ...components,
