@@ -17,14 +17,14 @@ export default function Articles() {
                                 <Link
                                     href={
                                         article.slug !== undefined
-                                            ? article.slug
+                                            ? `/articles/${article.slug}`
                                             : article.externalLink
                                     }
                                     target="_blank"
                                     key={article.title}
                                 >
                                     <div className="flex space-x-2 justify-between items-center tablet:justify-normal">
-                                        <p className="text-text-sm tablet:text-text-md text-white font-body hover:underline">
+                                        <p className="text-text-sm tablet:text-text-md text-white font-body hover:underline hover:underline-offset-4">
                                             {article.title}
                                         </p>
                                     </div>

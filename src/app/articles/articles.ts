@@ -61,6 +61,6 @@ export const Articles: Article[] = [
     {
         title: "How to integrate Coinbase Smart Wallet into your frontend",
         date: new Date("2024-06-28"),
-        slug: "/articles/cbsw-connect-wallet-tutorial",
+        slug: "cbsw-connect-wallet-tutorial",
     },
 ];

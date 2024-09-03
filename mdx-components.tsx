@@ -3,6 +3,7 @@ import H2 from "@/components/ui/h2";
 import H3 from "@/components/ui/h3";
 import Pre from "@/components/ui/pre";
 import Text from "@/components/ui/text";
+import Header from "@/components/ui/markdown/header";
 import type { MDXComponents } from "mdx/types";
 import React, { isValidElement, ReactNode } from "react";
 
@@ -99,6 +100,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
                 {children}
             </a>
         ),
+        Header,
         ...components,
     };
 }

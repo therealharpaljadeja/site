@@ -1,4 +1,4 @@
-# How to integrate Coinbase Smart Wallet into your frontend (Wagmi Template)
+<Header slug="cbsw-connect-wallet-tutorial" />
 
 > [!NOTE]  
 > This repository has the completed code if you are looking for instructions on using this repo jump to [Usage](#usage) section, below are the steps to recreate this project from Wagmi Template.
@@ -162,8 +162,7 @@ function App() {
 
 The `mint` function below is an example of how you can prompt transactions to the user. We are using wagmi's [`useWriteContracts`](https://wagmi.sh/react/api/hooks/useWriteContracts) hook which allows batching multiple transactions (since Coinbase Smart Wallet supports batching!)
 
-> [!NOTE]
-> `writeContractAsync` won't return a transaction hash instead returns a batch id when can be used to further get the batch status, more on that in the next step.
+> [!NOTE] > `writeContractAsync` won't return a transaction hash instead returns a batch id when can be used to further get the batch status, more on that in the next step.
 
 ```tsx
 function App() {
