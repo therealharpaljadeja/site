@@ -29,7 +29,7 @@ function ArticlesSection() {
                         <Link
                             href={
                                 article.slug !== undefined
-                                    ? article.slug
+                                    ? `/articles/${article.slug}`
                                     : article.externalLink
                             }
                             target="_blank"
