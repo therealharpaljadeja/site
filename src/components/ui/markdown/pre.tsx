@@ -33,7 +33,7 @@ const Pre = ({
                         <pre
                             style={style}
                             className={
-                                "border-2 flex border-graymodern-600 relative bg-graymodern-900 rounded-md "
+                                "border-2 flex border-graymodern-600  relative bg-graymodern-900 rounded-md "
                             }
                         >
                             {showLineNumbers ? (
@@ -41,7 +41,7 @@ const Pre = ({
                                     {tokens.map((line, i) => {
                                         return (
                                             <span
-                                                className="w-8 text-graymodern-400 inline-block select-none text-right"
+                                                className="w-8 text-text-sm tablet:text-text-md text-graymodern-400 inline-block select-none text-right"
                                                 key={i}
                                             >
                                                 {i + 1}
@@ -50,7 +50,7 @@ const Pre = ({
                                     })}
                                 </div>
                             ) : null}
-                            <div className="p-2 overflow-x-scroll hide-scrollbar">
+                            <div className="p-2 overflow-x-scroll text-text-sm tablet:text-text-md hide-scrollbar">
                                 {tokens.map((line, i) => {
                                     const { className, ...restLineProps } =
                                         getLineProps({ line });
