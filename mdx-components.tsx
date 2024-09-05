@@ -18,6 +18,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
             let childrenProps = isValidElement(children)
                 ? children.props
                 : undefined;
+
             let language = childrenProps?.className
                 ? childrenProps.className.substring(9)
                 : undefined;
@@ -27,7 +28,11 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
                     ? childrenProps.children.trim()
                     : "";
 
-            return <Pre language={language}>{code}</Pre>;
+            return (
+                <Pre language={language} {...rest}>
+                    {code}
+                </Pre>
+            );
         },
         p: P,
         ol: Ol,
