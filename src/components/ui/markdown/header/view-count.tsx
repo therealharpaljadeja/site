@@ -1,23 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import useSWR from "swr";
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export function BlogViewCount({ id }: { id: string }) {
-    const [views, setViews] = useState(0);
+    const { data } = useSWR(`/api/views?id=${id}&incr=1`, fetcher);
 
-    useEffect(() => {
-        async function getViews() {
-            const { views } = (await (
-                await fetch(`/api/blog/views?id=${id}&incr=1`)
-            ).json()) as unknown as {
-                id: string;
-                views: number;
-                visitors: number | null;
-            };
-            setViews(views);
-        }
-        getViews();
-    }, []);
-
-    return <span className="text-graymodern-500 font-body">{views} views</span>;
+    return (
+        <span className="text-graymodern-500 font-body">
+            {data?.views || 0} views
+        </span>
+    );
 }
