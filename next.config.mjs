@@ -1,5 +1,6 @@
 import createMDX from "@next/mdx";
 import rehypeKatex from "rehype-katex";
+import rehypeMdxCodeProps from "rehype-mdx-code-props";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import remarkRehype from "remark-rehype";
@@ -14,7 +15,7 @@ const withMDX = createMDX({
     // Add markdown plugins here, as desired
     options: {
         remarkPlugins: [remarkMath, remarkGfm],
-        rehypePlugins: [remarkRehype, rehypeKatex],
+        rehypePlugins: [remarkRehype, rehypeKatex, rehypeMdxCodeProps],
     },
 });
 

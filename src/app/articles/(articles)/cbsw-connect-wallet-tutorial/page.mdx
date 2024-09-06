@@ -15,7 +15,7 @@ npm create wagmi
 
 Change the config in file `src/wagmi.ts`
 
-```ts file=wagmi.ts
+```ts showLineNumbers={true} fileName="wagmi.ts" filePath="src/wagmi.ts"
 const config = createConfig({
     chains: [baseSepolia],
     // chains: [base], // Base mainnet
@@ -39,7 +39,7 @@ Coinbase Blue Connect Wallet Button comprises of an additional component called 
 
 The below is the code for the same.
 
-```tsx file=CoinbaseWalletLogo.tsx
+```tsx showLineNumbers={true} fileName="CoinbaseWalletLogo.tsx" filePath="src/components/CoinbaseWalletLogo.tsx"
 import React from "react";
 
 const defaultContainerStyles = {
@@ -73,7 +73,7 @@ To create `CoinbaseButton` component use the below code and paste in a file.
 
 For example: `src/components/CoinbaseButton.tsx`
 
-```tsx file=CoinbaseButton.tsx
+```tsx showLineNumbers={true} fileName="CoinbaseButton.tsx" filePath="src/components/CoinbaseButton.tsx"
 import React, { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
 import { CoinbaseWalletLogo } from "./CoinbaseWalletLogo";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
@@ -133,7 +133,7 @@ export default function CoinbaseButton(
 
 If you want not implemented the `CoinbaseButton` component you can any button of your choice, just make sure to copy the code related to `wagmi` hooks.
 
-```tsx
+```tsx showLineNumbers={true} fileName="page.tsx" filePath="src/app/page.tsx"
 import CoinbaseButton from "@/components/CoinbaseButton";
 import { useConnect } from "wagmi";
 
@@ -164,7 +164,7 @@ The `mint` function below is an example of how you can prompt transactions to th
 
 > [!NOTE] > `writeContractAsync` won't return a transaction hash instead returns a batch id when can be used to further get the batch status, more on that in the next step.
 
-```tsx
+```tsx showLineNumbers={true} fileName="page.tsx" filePath="src/app/page.tsx"
 function App() {
     const {
         writeContractsAsync,
@@ -203,7 +203,7 @@ Once you have the batch id from `writeContractsAsync` or `writeContracts` you ca
 
 `useCallsStatus` returns receipts for all calls in the batch, if you are sending a single transaction the first recipt should be the receipt for your transaction.
 
-```tsx
+```tsx showLineNumbers={true} fileName="page.tsx" filePath="src/app/page.tsx"
 function App() {
     const {
         writeContractsAsync,
