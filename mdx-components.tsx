@@ -8,12 +8,14 @@ import React, { isValidElement } from "react";
 import P from "@/components/ui/markdown/p";
 import Ol from "@/components/ui/markdown/ol";
 import A from "@/components/ui/markdown/a";
+import Code from "@/components/ui/markdown/code";
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
     return {
         h1: H1,
         h2: H2,
         h3: H3,
+        code: Code,
         pre: ({ children, ...rest }) => {
             let childrenProps = isValidElement(children)
                 ? children.props
