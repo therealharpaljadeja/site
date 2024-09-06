@@ -42,7 +42,7 @@ export default function H3({ children, ...rest }: JSX.IntrinsicElements["h3"]) {
                     }}
                 >
                     {children}
-                    <Link className="hidden size-3 text-graymodern-500 animate-in fade-in-50 group-hover:inline ml-2 group-focus-visible:flex md:size-6" />
+                    <Link className="hidden size-3 text-graymodern-500 animate-in fade-in-50 group-hover:inline ml-2 group-focus-visible:inline md:size-6" />
                 </a>
             </Heading3>
         );
