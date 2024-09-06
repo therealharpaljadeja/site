@@ -54,12 +54,12 @@ const Pre = ({
                         className="flex flex-col justify-start bg-graymodern-700 rounded-t-md"
                         code-block-header=""
                     >
-                        <span className="flex font-display items-center space-x-2 bg-[rgb(40_40_40)] px-4 py-2 rounded-t-md text-[rgb(190_190_190)]">
-                            <Icon className="w-4 h-4" />
+                        <span className="flex font-display items-center space-x-2 bg-[rgb(40_40_40)] px-4 py-2 rounded-t-md text-[rgb(190_190_190)] text-text-sm tablet:text-text-md">
+                            <Icon className="w-3 h-3 tablet:w-4 tablet:h-4" />
                             <div>{fileName}</div>
                         </span>
                         {fileLocation.length ? (
-                            <div className="flex space-x-2 px-4 py-1 bg-[rgb(30_30_30)] text-[rgb(140_140_140)] items-center font-display text-text-sm">
+                            <div className="flex space-x-2 px-4 py-1 bg-[rgb(30_30_30)] text-[rgb(140_140_140)] items-center font-display text-text-xs tablet:text-text-md">
                                 {fileLocation.map((location, index) =>
                                     index === fileLocation.length - 1 ? (
                                         <>
