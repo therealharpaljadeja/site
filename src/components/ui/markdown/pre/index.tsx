@@ -4,6 +4,17 @@ import clsx from "clsx";
 import { Highlight, themes } from "prism-react-renderer";
 import CodeBlockLanguageLogo from "./language-logo";
 import { File, FileDiff, TerminalSquare } from "lucide-react";
+import Prism from "prismjs";
+
+(typeof global === "undefined" ? window : global).Prism = Prism;
+require("prismjs/components/prism-javascript");
+require("prismjs/components/prism-typescript");
+require("prismjs/components/prism-jsx");
+require("prismjs/components/prism-tsx");
+require("prismjs/components/prism-solidity");
+require("prismjs/components/prism-python");
+require("prismjs/components/prism-bash");
+require("prismjs/components/prism-diff");
 
 const Pre = ({
     children,
@@ -86,6 +97,7 @@ const Pre = ({
                     style={{ overflowX: "scroll" }}
                 > */}
                 <Highlight
+                    prism={Prism}
                     theme={themes.vsDark}
                     code={children as string}
                     language={language}
