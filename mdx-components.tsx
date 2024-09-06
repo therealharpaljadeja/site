@@ -1,7 +1,7 @@
 import H1 from "@/components/ui/markdown/h1";
 import H2 from "@/components/ui/markdown/h2";
 import H3 from "@/components/ui/markdown/h3";
-import Pre from "@/components/ui/markdown/pre";
+import Pre from "@/components/ui/markdown/pre/index";
 import Header from "@/components/ui/markdown/header";
 import type { MDXComponents } from "mdx/types";
 import React, { isValidElement } from "react";

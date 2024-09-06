@@ -1,19 +1,86 @@
 "use client";
 
 import clsx from "clsx";
-import { Highlight, RenderProps, themes } from "prism-react-renderer";
+import { Highlight, themes } from "prism-react-renderer";
+import CodeBlockLanguageLogo from "./language-logo";
+import { File, FileDiff, TerminalSquare } from "lucide-react";
 
 const Pre = ({
     children,
     language,
     showLineNumbers,
+    logo,
+    fileName,
+    filePath,
 }: JSX.IntrinsicElements["pre"] & {
     language: string;
     showLineNumbers?: boolean;
+    logo?: React.FC<JSX.IntrinsicElements["svg"]>;
+    fileName?: string;
+    filePath?: string;
 }) => {
+    const hasHeader = fileName !== undefined;
+    let fileLocation: string[] = [];
+
+    if (filePath) {
+        fileLocation = filePath.split("/");
+    }
+
+    const Icon = logo
+        ? logo
+        : language === "javascript" || language === "js"
+        ? CodeBlockLanguageLogo.JavaScript
+        : language === "typescript" || language === "ts"
+        ? CodeBlockLanguageLogo.TypeScript
+        : language === "jsx"
+        ? CodeBlockLanguageLogo.React
+        : language === "tsx"
+        ? CodeBlockLanguageLogo.React
+        : language === "solidity" || language === "sol"
+        ? CodeBlockLanguageLogo.Solidity
+        : language === "python" || language === "py"
+        ? CodeBlockLanguageLogo.Python
+        : language === "bash" || language === "sh"
+        ? TerminalSquare
+        : language === "diff"
+        ? FileDiff
+        : File;
+
     return (
-        <div className="overflow-hidden">
-            <div>
+        <div className="overflow-hidden shadow-lg">
+            <div className="flex flex-col">
+                {hasHeader ? (
+                    <div
+                        className="flex flex-col justify-start bg-graymodern-700 rounded-t-md"
+                        code-block-header=""
+                    >
+                        <span className="flex font-display items-center space-x-2 bg-[rgb(40_40_40)] px-4 py-2 rounded-t-md text-[rgb(190_190_190)]">
+                            <Icon className="w-4 h-4" />
+                            <div>{fileName}</div>
+                        </span>
+                        {fileLocation.length ? (
+                            <div className="flex space-x-2 px-4 py-1 bg-[rgb(30_30_30)] text-[rgb(140_140_140)] items-center font-display text-text-sm">
+                                {fileLocation.map((location, index) =>
+                                    index === fileLocation.length - 1 ? (
+                                        <>
+                                            <span>{location}</span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <span>{location}</span>
+                                            <span>&gt;</span>
+                                        </>
+                                    )
+                                )}
+                            </div>
+                        ) : null}
+                        {/* <CodeBlockActions
+                            code={children}
+                            switcher={switcher}
+                            inHeader
+                        /> */}
+                    </div>
+                ) : null}
                 {/* <pre
                     className="border-2 border-graymodern-600 bg-graymodern-900 p-2 rounded-md overflow-x-scroll hide-scrollbar"
                     style={{ overflowX: "scroll" }}
@@ -32,9 +99,10 @@ const Pre = ({
                     }) => (
                         <pre
                             style={style}
-                            className={
-                                "border-2 flex border-graymodern-600  relative bg-graymodern-900 rounded-md "
-                            }
+                            className={clsx(
+                                "flex relative bg-graymodern-900 border-t-2 border-[rgb(40_40_40)]",
+                                hasHeader ? "rounded-b-md" : "rounded-md"
+                            )}
                         >
                             {showLineNumbers ? (
                                 <div className="flex flex-col border-r-2 p-2 shadow-md border-[rgb(40_40_40)]">
