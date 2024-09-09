@@ -26,7 +26,7 @@ export default function H2({ children, ...rest }: JSX.IntrinsicElements["h2"]) {
             <Heading2 id={id} {...rest}>
                 <a
                     href={`#${id}`}
-                    className="no-underline hover:underline group"
+                    className="no-underline hover:underline group "
                     onClick={() => {
                         navigator.clipboard.writeText(
                             `${
