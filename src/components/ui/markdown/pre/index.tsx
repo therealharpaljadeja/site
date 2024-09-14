@@ -77,8 +77,8 @@ const Pre = ({
         : File;
 
     return (
-        <div className="overflow-hidden shadow-lg">
-            <div className="flex flex-col">
+        <div className="overflow-hidden shadow-lg rounded-md">
+            <div className={"flex flex-col"}>
                 {hasHeader ? (
                     <div
                         className="flex flex-col justify-start bg-graymodern-700 rounded-t-md"
@@ -130,12 +130,14 @@ const Pre = ({
                         <pre
                             style={style}
                             className={clsx(
-                                "flex relative bg-graymodern-900 border-t-2 border-[rgb(40_40_40)]",
-                                hasHeader ? "rounded-b-md" : "rounded-md"
+                                "flex relative bg-graymodern-900",
+                                hasHeader
+                                    ? "border-t-2 border-[rgb(40_40_40)] rounded-b-md"
+                                    : "rounded-md"
                             )}
                         >
                             {showLineNumbers ? (
-                                <div className="flex flex-col shadow-md border-[rgb(40_40_40)] ">
+                                <div className="flex flex-col shadow-md border-[rgb(40_40_40)]">
                                     {tokens.map((line, i) => {
                                         return (
                                             <span
