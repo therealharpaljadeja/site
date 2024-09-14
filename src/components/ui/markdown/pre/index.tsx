@@ -5,6 +5,7 @@ import { Highlight, themes } from "prism-react-renderer";
 import CodeBlockLanguageLogo from "./language-logo";
 import { File, FileDiff, TerminalSquare } from "lucide-react";
 import Prism from "prismjs";
+import CopyButton from "./copy-button";
 
 (typeof global === "undefined" ? window : global).Prism = Prism;
 require("prismjs/components/prism-javascript");
@@ -16,16 +17,34 @@ require("prismjs/components/prism-python");
 require("prismjs/components/prism-bash");
 require("prismjs/components/prism-diff");
 
+function isLineToBeHighlighted(number: number, ranges: (number | number[])[]) {
+    let highlightLine = false;
+    for (let i = 0; i < ranges.length; i++) {
+        if (Array.isArray(ranges[i])) {
+            const [min, max] = ranges[i] as number[];
+            // Check if the number is between or equal to the boundaries
+            highlightLine = number >= min && number <= max;
+        } else {
+            highlightLine = number === ranges[i];
+        }
+        if (highlightLine) return highlightLine;
+    }
+
+    return highlightLine;
+}
+
 const Pre = ({
     children,
     language,
     showLineNumbers,
+    highlightLines = [],
     logo,
     fileName,
     filePath,
 }: JSX.IntrinsicElements["pre"] & {
     language: string;
     showLineNumbers?: boolean;
+    highlightLines?: (number | number[])[];
     logo?: React.FC<JSX.IntrinsicElements["svg"]>;
     fileName?: string;
     filePath?: string;
@@ -65,10 +84,15 @@ const Pre = ({
                         className="flex flex-col justify-start bg-graymodern-700 rounded-t-md"
                         code-block-header=""
                     >
-                        <span className="flex font-display items-center space-x-2 bg-[rgb(40_40_40)] px-4 py-2 rounded-t-md text-[rgb(190_190_190)] text-text-sm tablet:text-text-md">
-                            <Icon className="w-3 h-3 tablet:w-4 tablet:h-4" />
-                            <div>{fileName}</div>
-                        </span>
+                        <div className="flex justify-between items-center bg-[rgb(40_40_40)]">
+                            <span className="flex font-display items-center space-x-2 px-4 py-2 rounded-t-md text-[rgb(190_190_190)] text-text-sm tablet:text-text-md">
+                                <Icon className="w-3 h-3 tablet:w-4 tablet:h-4" />
+                                <div>{fileName}</div>
+                            </span>
+                            <span className="px-4 py-2">
+                                <CopyButton code={children as string} />
+                            </span>
+                        </div>
                         {fileLocation.length ? (
                             <div className="flex space-x-2 px-4 py-1 bg-[rgb(30_30_30)] text-[rgb(140_140_140)] items-center font-display text-text-xs tablet:text-text-md">
                                 {fileLocation.map((location, index) =>
@@ -102,13 +126,7 @@ const Pre = ({
                     code={children as string}
                     language={language}
                 >
-                    {({
-                        className,
-                        style,
-                        tokens,
-                        getLineProps,
-                        getTokenProps,
-                    }) => (
+                    {({ style, tokens, getLineProps, getTokenProps }) => (
                         <pre
                             style={style}
                             className={clsx(
@@ -117,11 +135,23 @@ const Pre = ({
                             )}
                         >
                             {showLineNumbers ? (
-                                <div className="flex flex-col border-r-2 p-2 shadow-md border-[rgb(40_40_40)]">
+                                <div className="flex flex-col shadow-md border-[rgb(40_40_40)] ">
                                     {tokens.map((line, i) => {
                                         return (
                                             <span
-                                                className="w-8 text-text-sm tablet:text-text-md text-graymodern-400 inline-block select-none text-right"
+                                                className={clsx(
+                                                    "w-12 text-text-sm tablet:text-text-md text-graymodern-400 inline-block select-none text-right border-r-2  border-[rgb(40_40_40)] px-2",
+                                                    i === 0 ? "pt-2" : "",
+                                                    i === tokens.length - 1
+                                                        ? "pb-2"
+                                                        : "",
+                                                    isLineToBeHighlighted(
+                                                        i + 1,
+                                                        highlightLines
+                                                    )
+                                                        ? "bg-graymodern-800 border-r-2  border-l-2 border-l-graymodern-700 border-r-graymodern-400"
+                                                        : ""
+                                                )}
                                                 key={i}
                                             >
                                                 {i + 1}
@@ -130,23 +160,26 @@ const Pre = ({
                                     })}
                                 </div>
                             ) : null}
-                            <div className="p-2 overflow-x-scroll text-text-sm tablet:text-text-md hide-scrollbar">
+                            <div
+                                className={clsx(
+                                    "py-2 overflow-x-scroll text-text-sm tablet:text-text-md hide-scrollbar"
+                                )}
+                            >
                                 {tokens.map((line, i) => {
                                     const { className, ...restLineProps } =
-                                        getLineProps({ line });
+                                        getLineProps({
+                                            line,
+                                        });
                                     return (
                                         <div
                                             key={i}
                                             className={clsx(
-                                                "px-2 min-w-fit",
+                                                "px-4 min-w-fit",
                                                 className
                                             )}
                                             code-block-line=""
                                             {...restLineProps}
                                         >
-                                            {/* <span className="pr-4 w-8 opacity-60 inline-block select-none text-right">
-                                            {i + 1}
-                                        </span> */}
                                             {line.map((token, key) => (
                                                 <span
                                                     key={key}
