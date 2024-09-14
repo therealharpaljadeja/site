@@ -1,5 +1,27 @@
 import clsx from "clsx";
 import React from "react";
+import { Articles } from "../articles";
+
+type Params = {
+    slug: string;
+};
+
+export async function generateMetadata({ params }: { params: Params }) {
+    // Path to your markdown file
+    const { slug } = params;
+    const post = Articles.find((article) => article.slug === slug);
+
+    if (post)
+        // Dynamic metadata generation
+        return {
+            title: post.title,
+            openGraph: {
+                title: post.title,
+            },
+        };
+
+    return null;
+}
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (
