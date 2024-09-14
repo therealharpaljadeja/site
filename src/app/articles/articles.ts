@@ -57,10 +57,14 @@ export const Articles: Article[] = [
         externalLink:
             "https://metaschool.so/courses/create-a-horoscope-web3-nft-application",
     },
-
     {
         title: "How to integrate Coinbase Smart Wallet into your frontend",
         date: new Date("2024-06-28"),
         slug: "cbsw-connect-wallet-tutorial",
+    },
+    {
+        title: "Persisting CBSW Session Keys in IndexedDB",
+        date: new Date("2024-09-14"),
+        slug: "persisting-cbsw-session-keys-in-indexed-db",
     },
 ];

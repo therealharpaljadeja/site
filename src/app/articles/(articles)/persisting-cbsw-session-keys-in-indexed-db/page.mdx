@@ -1,0 +1,503 @@
+<Header slug="persisting-cbsw-session-keys-in-indexed-db" />
+
+Coinbase team is soon going to add Session Keys support to the Smart Wallet!
+
+Currently, you can play with/test the Coinbase Smart Wallet with Session Keys on Testnet by following the guide [here](https://www.smartwallet.dev/guides/session-keys).
+
+If you have already been testing Session Keys you may have noticed that whenever you make a change to your frontend you need to redo the process of granting permissions, this is because `permissionsContext` and `credential` which are important variables required to perform transaction using Session Keys are state variables that get destroyed on hot refresh triggered every time you make a change.
+
+![credential-and-permissionsContext](/images/persisting-cbsw-session-keys-in-indexed-db/1.png)
+
+Here is an example.
+
+![non-persisted-session-keys-demo](/images/persisting-cbsw-session-keys-in-indexed-db/before-persisting.gif)
+
+This can be very frustrating during the development process.
+
+The official guide does mention this and suggest that we can persist `permissionsContext` and `credential` variables in [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API)
+
+![official-guide-suggestion](/images/persisting-cbsw-session-keys-in-indexed-db/2.png)
+
+This guide helps you with exactly that!
+
+Let's get started!
+
+## Prerequisites
+
+You should have already integrated smart wallet into your dApp (here's a [guide](/articles/cbsw-connect-wallet-tutorial) if you haven't) along with [Session Keys support](https://smartwallet.dev/guides/session-keys). This guide does not go over the integration part.
+
+## Installing dependencies
+
+You can interact with IndexedDB via [IndexedDB API](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) directly however [idb](https://www.npmjs.com/package/idb) is a convenient npm package that streamlines the interaction with IndexedDB.
+
+```bash
+npm install idb
+```
+
+## Writing a React hook
+
+We will write a React hook that load and store value to IndexedDB very similar to how `useState` does.
+
+`useIndexedDBState` will take a `key` which will be the `objectStore` name and an `initialValue` to be stored (if any).
+
+We will have 2 `objectStore`s one for `credential` and other for `permissionsContext`.
+
+```tsx showLineNumbers={true} fileName="useIndexedDBState.tsx" filePath="src/hooks/useIndexedDBState.tsx"
+import { useState } from "react";
+
+const useIndexedDBState = (key: string, initialValue: unknown) => {
+    const [state, setState] = useState(initialValue);
+    return { state, setState };
+};
+```
+
+### Create the Database and defining the schema
+
+Let's now write a function to create the db and define the schema.
+
+```tsx showLineNumbers={true} fileName="useIndexedDBState.tsx" filePath="src/hooks/useIndexedDBState.tsx" highlightLines={[1, 2, [4,23]]}
+import { useEffect, useState } from "react";
+import { openDB } from "idb";
+
+async function getDatabase(key: string) {
+    return openDB("cbsw", 1, {
+        upgrade(db: any) {
+            if (!db.objectStoreNames.contains(key)) {
+                const contextStore = db.createObjectStore("context", {
+                    keyPath: "address",
+                });
+                const credentialStore = db.createObjectStore("credential", {
+                    keyPath: "address",
+                });
+                contextStore.createIndex("address", "address", {
+                    unique: true,
+                });
+                credentialStore.createIndex("address", "address", {
+                    unique: true,
+                });
+            }
+        },
+    });
+}
+
+const useIndexedDBState = (key: string, initialValue: unknown) => {
+    const [state, setState] = useState(initialValue);
+    return { state, setState };
+};
+```
+
+### `getDatabase` explained
+
+The `getDatabase` takes in a `key` and tries to get the objectStore if it does not exist if creates it along with the schema.
+
+The function `openDB` tries to open the version `1` of db called `cbsw`.
+
+The `openDB` function also takes in a `upgrade` function, the `upgrade` function is called when we try to open version `1` of `cbsw` db and it does not exist.
+
+So the `upgrade` function is the right place to define the schema, since it will called when we try to open the db the first time because it does not exist.
+
+Inside the upgrade function we check if the objectStores `permissionsContext` and `credential` already exists.
+
+```tsx
+if (!db.objectStoreNames.contains(key)) {
+    // objectStores do not exist.
+}
+```
+
+Since they don't we can create the objectStores using `createObjectStore` which takes in the name and some optional properties, in our case `keyPath` which is used to specify the column/property we will use to search values in the objectStore.
+
+In our example, the property we will use to search on both objectStores is `address`, more on that later.
+
+```tsx
+if (!db.objectStoreNames.contains(key)) {
+    const contextStore = db.createObjectStore("context", {
+        keyPath: "address",
+    });
+    const credentialStore = db.createObjectStore("credential", {
+        keyPath: "address",
+    });
+}
+```
+
+We can now create indexes using `createIndex` for the both objectStores, in our example below we are creating an index named `address` where the `keyPath` is `address` and we want to enforce `address` property to be unique.
+
+> We want to enforce uniqueness on the `address` property because if the user has multiple smart wallets connected to your dApp and each of them have session keys associated with them then you want your dApp to be able to load the session keys respective to the smart wallet that is currently connected which you can do by searching the objectStore using the connected smart wallet's address.
+
+```tsx
+if (!db.objectStoreNames.contains(key)) {
+    const contextStore = db.createObjectStore("context", {
+        keyPath: "address",
+    });
+    const credentialStore = db.createObjectStore("credential", {
+        keyPath: "address",
+    });
+    contextStore.createIndex("address", "address", {
+        unique: true,
+    });
+    credentialStore.createIndex("address", "address", {
+        unique: true,
+    });
+}
+```
+
+Now we have a function `getDatabase` that can create a db when it does not exist and get the db when it does.
+
+### Loading the database and values from IndexedDB (if it exists).
+
+Let's now use a `useEffect` to create/load the db when the dApp mounts.
+
+In the code below `initDB` is the called first when the dApp mounts and then everytime the `key` (the objectStore to access) or the connected wallet address changes.
+
+```tsx showLineNumbers={true} fileName="useIndexedDBState.tsx" filePath="src/hooks/useIndexedDBState.tsx" highlightLines={[3, [28,38]]}
+import { useEffect, useState } from "react";
+import { openDB } from "idb";
+import { useAccount } from "wagmi";
+
+async function getDatabase(key: string) {
+    return openDB("cbsw", 1, {
+        upgrade(db: any) {
+            if (!db.objectStoreNames.contains(key)) {
+                const contextStore = db.createObjectStore("context", {
+                    keyPath: "address",
+                });
+                const credentialStore = db.createObjectStore("credential", {
+                    keyPath: "address",
+                });
+                contextStore.createIndex("address", "address", {
+                    unique: true,
+                });
+                credentialStore.createIndex("address", "address", {
+                    unique: true,
+                });
+            }
+        },
+    });
+}
+
+const useIndexedDBState = (key: string, initialValue: unknown) => {
+    const [state, setState] = useState(initialValue);
+    const { address } = useAccount();
+
+    useEffect(() => {
+        const initDB = async () => {
+            if (address) {
+                const db = await getDatabase(key);
+            }
+        };
+
+        initDB();
+    }, [key, address]);
+
+    return { state, setState };
+};
+```
+
+Once we get the DB, we can search for the value we are looking for using the objectStore name and connected wallet address.
+
+The value retrieved can then be loaded onto state.
+
+> Depending on the `key` (`credential` or `context`) we load the value and set the respective as the state, this has to be done because the type of value is different for `credential` and `context`.
+
+```tsx showLineNumbers={true} fileName="useIndexedDBState.tsx" filePath="src/hooks/useIndexedDBState.tsx" highlightLines={[4, [37,52]]}
+import { useEffect, useState } from "react";
+import { openDB } from "idb";
+import { useAccount } from "wagmi";
+import { checksumAddress } from "viem";
+
+async function getDatabase(key: string) {
+    return openDB("cbsw", 1, {
+        upgrade(db: any) {
+            if (!db.objectStoreNames.contains(key)) {
+                const contextStore = db.createObjectStore("context", {
+                    keyPath: "address",
+                });
+                const credentialStore = db.createObjectStore("credential", {
+                    keyPath: "address",
+                });
+                contextStore.createIndex("address", "address", {
+                    unique: true,
+                });
+                credentialStore.createIndex("address", "address", {
+                    unique: true,
+                });
+            }
+        },
+    });
+}
+
+const useIndexedDBState = (key: string, initialValue: unknown) => {
+    const [state, setState] = useState(initialValue);
+    const { address } = useAccount();
+
+    useEffect(() => {
+        const initDB = async () => {
+            if (address) {
+                const db = await getDatabase(key);
+            }
+
+            const storedValue = await db.get(key, checksumAddress(address));
+            if (storedValue !== undefined) {
+                if (key === "credential") {
+                    const { credential } = storedValue as {
+                        address: Hex;
+                        credential: unknown;
+                    };
+                    setState(credential);
+                } else {
+                    const { context } = storedValue as {
+                        address: Hex;
+                        context: unknown;
+                    };
+                    setState(context);
+                }
+            }
+        };
+
+        initDB();
+    }, [key, address]);
+
+    return { state, setState };
+};
+```
+
+Now the hook can create/load DB, load values from DB (if they exist) and initialize the state.
+
+### Saving the React state values to IndexedDB
+
+Let's now write another `useEffect` which will update the values in IndexedDB when the React state values change.
+
+The `saveToDB` function is called when the frontend dApp changes the `credential` and `permissionsContext` value, so that the updated state values can then be stored in IndexedDB.
+
+Depending on the `key` to `useIndexedDBState` the value is stored in the respective format.
+
+We store the value using `db.put` which takes in the objectStore name and the value we want to store, in our example we store both the connected wallet address `address` and the value (state value of `credential` or `context`).
+
+```tsx showLineNumbers={true} fileName="useIndexedDBState.tsx" filePath="src/hooks/useIndexedDBState.tsx" highlightLines={[[58,79], 84]}
+import { useEffect, useState } from "react";
+import { openDB } from "idb";
+import { checksumAddress } from "viem";
+import { useAccount } from "wagmi";
+
+async function getDatabase(key: string) {
+    return openDB("cbsw", 1, {
+        upgrade(db: any) {
+            if (!db.objectStoreNames.contains(key)) {
+                const contextStore = db.createObjectStore("context", {
+                    keyPath: "address",
+                });
+                const credentialStore = db.createObjectStore("credential", {
+                    keyPath: "address",
+                });
+                contextStore.createIndex("address", "address", {
+                    unique: true,
+                });
+                credentialStore.createIndex("address", "address", {
+                    unique: true,
+                });
+            }
+        },
+    });
+}
+
+const useIndexedDBState = (key: string, initialValue: unknown) => {
+    const [state, setState] = useState(initialValue);
+    const { address } = useAccount();
+
+    useEffect(() => {
+        const initDB = async () => {
+            if (address) {
+                const db = await getDatabase(key);
+            }
+
+            const storedValue = await db.get(key, checksumAddress(address));
+            if (storedValue !== undefined) {
+                if (key === "credential") {
+                    const { credential } = storedValue as {
+                        address: Hex;
+                        credential: unknown;
+                    };
+                    setState(credential);
+                } else {
+                    const { context } = storedValue as {
+                        address: Hex;
+                        context: unknown;
+                    };
+                    setState(context);
+                }
+            }
+        };
+
+        initDB();
+    }, [key, address]);
+
+    useEffect(() => {
+        const saveToDB = async () => {
+            if (address) {
+                const db = await getDatabase(key);
+                if (key === "credential") {
+                    await db.put(key, {
+                        address: checksumAddress(address),
+                        credential: state,
+                    });
+                } else {
+                    await db.put(key, {
+                        address: checksumAddress(address),
+                        context: state,
+                    });
+                }
+            }
+        };
+
+        if (state !== undefined) {
+            saveToDB();
+        }
+    }, [state, key]);
+
+    return { state, setState };
+};
+
+export default useIndexedDBState;
+```
+
+### Fixing Types
+
+Finally, let's add appropriate types to the hook.
+
+```tsx showLineNumbers={true} fileName="useIndexedDBState.tsx" filePath="src/hooks/useIndexedDBState.tsx"  highlightLines={[[6,9], [31,36], 50, 56]}
+import { useEffect, useState } from "react";
+import { openDB } from "idb";
+import { checksumAddress } from "viem";
+import { useAccount } from "wagmi";
+
+type Types = {
+    credential: Omit<P256Credential<"cryptokey">, "sign">;
+    context: Hex;
+};
+
+async function getDatabase(key: string) {
+    return openDB("cbsw", 1, {
+        upgrade(db: any) {
+            if (!db.objectStoreNames.contains(key)) {
+                const contextStore = db.createObjectStore("context", {
+                    keyPath: "address",
+                });
+                const credentialStore = db.createObjectStore("credential", {
+                    keyPath: "address",
+                });
+                contextStore.createIndex("address", "address", {
+                    unique: true,
+                });
+                credentialStore.createIndex("address", "address", {
+                    unique: true,
+                });
+            }
+        },
+    });
+}
+
+const useIndexedDBState = <T extends keyof Types>(
+    key: T,
+    initialValue: Types[T] | undefined
+) => {
+    const [state, setState] = useState<Types[T] | undefined>(initialValue);
+    const { address } = useAccount();
+
+    useEffect(() => {
+        const initDB = async () => {
+            if (address) {
+                const db = await getDatabase(key);
+            }
+
+            const storedValue = await db.get(key, checksumAddress(address));
+            if (storedValue !== undefined) {
+                if (key === "credential") {
+                    const { credential } = storedValue as {
+                        address: Hex;
+                        credential: Types[T];
+                    };
+                    setState(credential);
+                } else {
+                    const { context } = storedValue as {
+                        address: Hex;
+                        context: Types[T];
+                    };
+                    setState(context);
+                }
+            }
+        };
+
+        initDB();
+    }, [key, address]);
+
+    useEffect(() => {
+        const saveToDB = async () => {
+            if (address) {
+                const db = await getDatabase(key);
+                if (key === "credential") {
+                    await db.put(key, {
+                        address: checksumAddress(address),
+                        credential: state,
+                    });
+                } else {
+                    await db.put(key, {
+                        address: checksumAddress(address),
+                        context: state,
+                    });
+                }
+            }
+        };
+
+        if (state !== undefined) {
+            saveToDB();
+        }
+    }, [state, key]);
+
+    return { state, setState };
+};
+
+export default useIndexedDBState;
+```
+
+That's it now the hook is ready to be used!
+
+### Using the `useIndexedDBState` hook
+
+This is how you can use the hook in the your dApp.
+
+The values `credential` and `permissionsContext` are now persisted in IndexedDB and can be used in your dApp.
+
+```tsx
+export function App() {
+    const { state: permissionsContext, setState: setPermissionsContext } =
+        useIndexedDBState<"context">("context", undefined);
+    const { state: credential, setState: setCredential } =
+        useIndexedDBState<"credential">("credential", undefined);
+
+    // rest of the code
+
+    const callsId = await sendCallsAsync({
+        // other properties and arguments
+        capabilities: {
+            permissions: {
+                context: permissionsContext,
+            },
+            paymasterService: {
+                url: import.meta.env.VITE_PAYMASTER_URL,
+            },
+        },
+        signatureOverride: signWithCredential(credential),
+    });
+}
+```
+
+_Now you won't have to grant permissions after every reload, yay!_
+
+### Preview
+
+Here is the previous example with the new changes.
+
+![persisted-session-keys-demo](/images/persisting-cbsw-session-keys-in-indexed-db/after-persisting.gif)
+
+[Here](https://github.com/therealharpaljadeja/cbsw-session-keys-demo/tree/session-keys-in-indexed-db) is the codebase, it has a lot of code which is subjective to the example.
+
+Thanks to [@lsr](https://warpcast.com/lsr) for providing some of the code above and answering my questions!
