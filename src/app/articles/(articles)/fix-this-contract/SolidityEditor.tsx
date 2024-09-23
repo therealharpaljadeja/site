@@ -57,11 +57,17 @@ export default function SolidityEditor({
             }
             const data = await response.json();
 
-            setIsFoundryInstalled(data.foundryInstalled);
+            setIsFoundryInstalled(
+                data.foundryInstalled && data.projectInitialized
+            );
             setSessionToken(data.sessionToken);
             console.log(
                 "Session info updated, Foundry installed:",
                 data.foundryInstalled
+            );
+            console.log(
+                "Session info updated, Project initialized:",
+                data.projectInitialized
             );
             return data.foundryInstalled;
         } catch (error) {
@@ -143,17 +149,18 @@ export default function SolidityEditor({
                                 ) : null}
                                 {runningTests ? (
                                     <button
-                                        onClick={handleRun}
                                         disabled={!isFoundryInstalled}
                                         className="flex bg-yellow-700 disabled:bg-graymodern-700 px-4 py-1 rounded-md text-white text-text-sm items-center space-x-2 mx-2 my-2 disabled:cursor-wait"
                                     >
-                                        <Ellipsis size={10} />{" "}
+                                        <Ellipsis size={20} />{" "}
                                         <span>Running</span>
                                     </button>
                                 ) : (
                                     <button
                                         onClick={handleRun}
-                                        disabled={!isFoundryInstalled}
+                                        disabled={
+                                            !isFoundryInstalled || runningTests
+                                        }
                                         className="flex bg-green-700 disabled:bg-graymodern-700 px-4 py-1 rounded-md text-white text-text-sm items-center space-x-2 mx-2 my-2 disabled:cursor-wait"
                                     >
                                         <Play size={10} /> <span>Run</span>
