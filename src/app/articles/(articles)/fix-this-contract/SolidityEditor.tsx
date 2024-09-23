@@ -3,7 +3,7 @@
 import Text from "@/components/ui/text";
 import Editor, { OnMount } from "@monaco-editor/react";
 import CodeBlockLanguageLogo from "@/components/ui/markdown/pre/language-logo/index";
-import { Circle, CircleCheck, CircleX, Play } from "lucide-react";
+import { Circle, CircleCheck, CircleX, Ellipsis, Play } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 
 function parseTestResults(testResults: string) {
@@ -40,8 +40,8 @@ export default function SolidityEditor({
     const [isFoundryInstalled, setIsFoundryInstalled] =
         useState<boolean>(false);
     const [sessionToken, setSessionToken] = useState<boolean>(false);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [testsResults, setTestsResults] = useState<any>(tests);
+    const [runningTests, setRunningTests] = useState<boolean>(false);
 
     const fetchSessionInfo = useCallback(async () => {
         try {
@@ -59,7 +59,6 @@ export default function SolidityEditor({
 
             setIsFoundryInstalled(data.foundryInstalled);
             setSessionToken(data.sessionToken);
-            setIsLoading(false);
             console.log(
                 "Session info updated, Foundry installed:",
                 data.foundryInstalled
@@ -67,7 +66,6 @@ export default function SolidityEditor({
             return data.foundryInstalled;
         } catch (error) {
             console.error("Error fetching session:", error);
-            setIsLoading(false);
             return false;
         }
     }, []);
@@ -100,22 +98,29 @@ export default function SolidityEditor({
     };
 
     const handleRun = async () => {
-        const response = await fetch(
-            "https://solidity-testing-backend-production.up.railway.app/api/test/Counter",
-            {
-                body: JSON.stringify({ content: editorContent }),
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                credentials: "include",
-            }
-        );
-        const data = await response.json();
-        console.log(data.output);
-        let parsedTestResults = parseTestResults(data.output);
-        console.log(parsedTestResults);
-        setTestsResults(parsedTestResults);
+        setRunningTests(true);
+        try {
+            const response = await fetch(
+                "https://solidity-testing-backend-production.up.railway.app/api/test/Counter",
+                {
+                    body: JSON.stringify({ content: editorContent }),
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    credentials: "include",
+                }
+            );
+            const data = await response.json();
+            console.log(data.output);
+            let parsedTestResults = parseTestResults(data.output);
+            console.log(parsedTestResults);
+            setTestsResults(parsedTestResults);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setRunningTests(false);
+        }
     };
 
     const Icon = CodeBlockLanguageLogo.Solidity;
@@ -136,13 +141,24 @@ export default function SolidityEditor({
                                         Installing Foundry...
                                     </span>
                                 ) : null}
-                                <button
-                                    onClick={handleRun}
-                                    disabled={!isFoundryInstalled}
-                                    className="flex bg-green-700 disabled:bg-graymodern-700 px-4 py-1 rounded-md text-white text-text-sm items-center space-x-2 mx-2 my-2 disabled:cursor-wait"
-                                >
-                                    <Play size={10} /> <span>Run</span>
-                                </button>
+                                {runningTests ? (
+                                    <button
+                                        onClick={handleRun}
+                                        disabled={!isFoundryInstalled}
+                                        className="flex bg-yellow-700 disabled:bg-graymodern-700 px-4 py-1 rounded-md text-white text-text-sm items-center space-x-2 mx-2 my-2 disabled:cursor-wait"
+                                    >
+                                        <Ellipsis size={10} />{" "}
+                                        <span>Running</span>
+                                    </button>
+                                ) : (
+                                    <button
+                                        onClick={handleRun}
+                                        disabled={!isFoundryInstalled}
+                                        className="flex bg-green-700 disabled:bg-graymodern-700 px-4 py-1 rounded-md text-white text-text-sm items-center space-x-2 mx-2 my-2 disabled:cursor-wait"
+                                    >
+                                        <Play size={10} /> <span>Run</span>
+                                    </button>
+                                )}
                             </div>
                         </div>
                     ) : null}
@@ -173,7 +189,7 @@ export default function SolidityEditor({
                                 >
                                     <span>{item}</span>
                                     {testsResults[item] === "NOT_RUN" ? (
-                                        <Circle size={30} />
+                                        <Circle size={20} />
                                     ) : testsResults[item] === "FAIL" ? (
                                         <CircleX
                                             className="stroke-red-700"
