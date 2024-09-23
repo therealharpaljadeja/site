@@ -3,8 +3,30 @@
 import Text from "@/components/ui/text";
 import Editor, { OnMount } from "@monaco-editor/react";
 import CodeBlockLanguageLogo from "@/components/ui/markdown/pre/language-logo/index";
-import { Play } from "lucide-react";
+import { Circle, CircleCheck, CircleX, Play } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
+
+function parseTestResults(testResults: string) {
+    // Regular expression to match the test results
+    const regex = /\[(PASS|FAIL(?:: .*?)?)\] (test_[\w()]+)/g;
+
+    const results: { [test: string]: string } = {};
+    let match;
+
+    // Extracting the test names and statuses
+    while ((match = regex.exec(testResults)) !== null) {
+        const status = match[1].startsWith("FAIL") ? "FAIL" : "PASS";
+        results[match[2]] = status;
+    }
+
+    return results;
+}
+
+const tests: { [testName: string]: "NOT_RUN" | "FAIL" | "PASS" } = {
+    "test_Increment()": "NOT_RUN",
+    "test_Decrement()": "NOT_RUN",
+    "test_IncrementDecrement()": "NOT_RUN",
+};
 
 export default function SolidityEditor({
     logo,
@@ -19,6 +41,7 @@ export default function SolidityEditor({
         useState<boolean>(false);
     const [sessionToken, setSessionToken] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [testsResults, setTestsResults] = useState<any>(tests);
 
     const fetchSessionInfo = useCallback(async () => {
         try {
@@ -73,19 +96,26 @@ export default function SolidityEditor({
     };
 
     const handleEditorChange = (value: string | undefined) => {
-        console.log(value);
+        setEditorContent(value);
     };
 
     const handleRun = async () => {
         const response = await fetch(
             "https://solidity-testing-backend-production.up.railway.app/api/test/Counter",
             {
-                body: editorContent,
+                body: JSON.stringify({ content: editorContent }),
                 method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
             }
         );
         const data = await response.json();
-        console.log(data);
+        console.log(data.output);
+        let parsedTestResults = parseTestResults(data.output);
+        console.log(parsedTestResults);
+        setTestsResults(parsedTestResults);
     };
 
     const Icon = CodeBlockLanguageLogo.Solidity;
@@ -94,20 +124,28 @@ export default function SolidityEditor({
         <div className="mt-8">
             <div className="flex flex-col space-y-4">
                 <div className="flex flex-col justify-start rounded-t-md">
-                    {editorMounted && (
+                    {editorMounted ? (
                         <div className="flex justify-between items-center w-full bg-[rgb(40_40_40)] border-b-2 border-graymodern-700">
                             <span className="flex font-display items-center space-x-2 px-4 py-2 rounded-t-md text-[rgb(190_190_190)] text-text-sm tablet:text-text-md">
                                 <Icon className="w-3 h-3 tablet:w-4 tablet:h-4" />
                                 <div>{"Counter.sol"}</div>
                             </span>
-                            <button
-                                onClick={handleRun}
-                                className="flex bg-green-500 px-2 py-1 rounded-md text-white text-text-sm items-center space-x-2 mx-2 my-2"
-                            >
-                                <Play size={10} /> <span>Run</span>
-                            </button>
+                            <div className="flex items-center space-x-4">
+                                {!isFoundryInstalled ? (
+                                    <span className="text-[10px]">
+                                        Installing Foundry...
+                                    </span>
+                                ) : null}
+                                <button
+                                    onClick={handleRun}
+                                    disabled={!isFoundryInstalled}
+                                    className="flex bg-green-700 disabled:bg-graymodern-700 px-4 py-1 rounded-md text-white text-text-sm items-center space-x-2 mx-2 my-2 disabled:cursor-wait"
+                                >
+                                    <Play size={10} /> <span>Run</span>
+                                </button>
+                            </div>
                         </div>
-                    )}
+                    ) : null}
                     <Editor
                         height="50vh"
                         theme="vs-dark"
@@ -127,8 +165,28 @@ export default function SolidityEditor({
                         }}
                     />
                     {editorMounted && (
-                        <div className="bg-black rounded-b-md p-2 text-text-sm">
-                            <span>➜ foundry-playground git:(main) ✗</span>
+                        <div className="flex flex-col mt-4 space-y-2">
+                            {Object.keys(testsResults).map((item: string) => (
+                                <div
+                                    className="flex justify-between items-center rounded-md border-2 border-graymodern-500 bg-graymodern-900 px-4 py-4 w-full"
+                                    key={item}
+                                >
+                                    <span>{item}</span>
+                                    {testsResults[item] === "NOT_RUN" ? (
+                                        <Circle size={30} />
+                                    ) : testsResults[item] === "FAIL" ? (
+                                        <CircleX
+                                            className="stroke-red-700"
+                                            size={30}
+                                        />
+                                    ) : testsResults[item] === "PASS" ? (
+                                        <CircleCheck
+                                            className="stroke-green-700"
+                                            size={30}
+                                        />
+                                    ) : null}
+                                </div>
+                            ))}
                         </div>
                     )}
                 </div>
