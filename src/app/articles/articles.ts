@@ -67,4 +67,9 @@ export const Articles: Article[] = [
         date: new Date("2024-09-14"),
         slug: "persisting-cbsw-session-keys-in-indexed-db",
     },
+    {
+        title: "Fix this contract",
+        date: new Date("2024-09-23"),
+        slug: "fix-this-contract",
+    },
 ];
